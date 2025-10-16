@@ -28,4 +28,7 @@ public:
             x * v.y - y * v.x
         );
     }
+    operator physx::PxVec3() const {
+        return physx::PxVec3(x, y, z);
+    }
 };
