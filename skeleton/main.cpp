@@ -9,6 +9,8 @@
 #include "callbacks.hpp"
 #include "axis.h"
 
+#include "Particle.h"
+
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -32,6 +34,7 @@ PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
 Axis* axis;
+Particle* particle;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -58,6 +61,7 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	axis = new Axis();
+	particle = new Particle({ 0, 0, 0 }, { 1, 0, 0 }, { 0, 2, 0 }, 0.9998f);
 	}
 
 
@@ -70,6 +74,7 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
+	particle->integrate(t);
 }
 
 // Function to clean data
@@ -77,6 +82,7 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	axis->derregister();
+	delete particle;
 
 	PX_UNUSED(interactive);
 
@@ -90,7 +96,7 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
-	}
+}
 
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)
