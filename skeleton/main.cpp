@@ -89,7 +89,6 @@ void stepPhysics(bool interactive, double t)
 	gScene->fetchResults(true);
 	for (auto projectile : projectiles) {
 		projectile->integrate(t);
-		std::cout << "DSPIARANDO\n";
 	}
 }
 
