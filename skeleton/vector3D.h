@@ -7,6 +7,7 @@ class Vector3D {
 public:
     Vector3D(float x = 0, float y = 0, float z = 0) : x(x), y(y), z(z) {}
     Vector3D(const Vector3D& v) : x(v.x), y(v.y), z(v.z) {}
+    Vector3D(const physx::PxVec3& v) : x(v.x), y(v.y), z(v.z) {}
     Vector3D& operator=(const Vector3D& v) {
         if (this != &v) { x = v.x; y = v.y; z = v.z; }
         return *this;

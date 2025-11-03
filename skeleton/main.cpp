@@ -9,7 +9,7 @@
 #include "callbacks.hpp"
 #include "axis.h"
 
-#include "Particle.h"
+#include "Projectile.h"
 
 #include <iostream>
 
@@ -34,7 +34,21 @@ PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
 Axis* axis;
-Particle* particle;
+std::vector<Projectile*> projectiles;
+
+void shoot()
+{
+	Vector3D eye = GetCamera()->getEye();
+	Vector3D dir = GetCamera()->getDir();
+
+	Vector3D velR = dir * 100.0f;
+	Vector3D velS = dir * 60.0f;
+
+
+	Projectile* p = new Projectile(eye + (dir * 6.0f), velR, velS, 0.1f, 0.98f);
+
+	projectiles.push_back(p);
+}
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -61,7 +75,6 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	axis = new Axis();
-	particle = new Particle({ 0, 0, 0 }, { 1, 0, 0 }, { 0, 2, 0 }, 0.9998f);
 	}
 
 
@@ -74,7 +87,10 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	particle->integrate(t);
+	for (auto projectile : projectiles) {
+		projectile->integrate(t);
+		std::cout << "DSPIARANDO\n";
+	}
 }
 
 // Function to clean data
@@ -82,7 +98,9 @@ void stepPhysics(bool interactive, double t)
 void cleanupPhysics(bool interactive)
 {
 	axis->derregister();
-	delete particle;
+	for (auto projectile : projectiles) {
+		delete projectile;
+	}
 
 	PX_UNUSED(interactive);
 
@@ -107,6 +125,9 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 	//case 'B': break;
 	//case ' ':	break;
+	case 'P':
+		shoot();
+		break;
 	case ' ':
 	{
 		break;

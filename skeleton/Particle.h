@@ -13,8 +13,8 @@ public:
 	Particle(Vector3D pos, Vector3D vel, Vector3D acc, float damp, Vector4 color = { 1.0f, 0.0f, 0.0f, 1.0f }, PxReal size = 2.0f);
 	~Particle();
 
-	void integrate(double t);
-private:
+	virtual void integrate(double t);
+protected:
 	Vector3D vel;
 	Vector3D acc;
 	float damp;
