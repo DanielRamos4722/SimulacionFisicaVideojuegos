@@ -10,6 +10,7 @@
 #include "axis.h"
 
 #include "Projectile.h"
+#include "ParticleSystem.h"
 
 #include <iostream>
 
@@ -35,6 +36,7 @@ ContactReportCallback gContactReportCallback;
 
 Axis* axis;
 std::vector<Projectile*> projectiles;
+ParticleSystem* particleSystem;
 
 void shoot()
 {
@@ -75,6 +77,11 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	axis = new Axis();
+
+	particleSystem = new ParticleSystem();
+	particleSystem->AddParticleGenerator(0.2f, { 25.0f, 20.0f, 10.0f }, { -1.0f, 0.0f, 0.0f }, 50.0f, 10.0f, 0.98f, 3.0f, 100.0f, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0f);
+	particleSystem->AddParticleGenerator(0.2f, { 10.0f, 15.0f, 25.0f }, { 0.0f, 0.0f, -1.0f }, 80.0f, 15.0f, 0.98f, 3.0f, 100.0f, { 0.0f, 1.0f, 0.0f, 1.0f }, 3.0f);
+	particleSystem->AddParticleGenerator(0.1f, { 10.0f, 10.0f, 10.0f }, { -1.0f, 0.0f, -1.0f }, 300.0f, 15.0f, 0.98f, 3.0f, 100.0f, { 1.0f, 1.0f, 0.0f, 1.0f }, 2.5f);
 	}
 
 
@@ -90,6 +97,7 @@ void stepPhysics(bool interactive, double t)
 	for (auto projectile : projectiles) {
 		projectile->integrate(t);
 	}
+	particleSystem->update(t);
 }
 
 // Function to clean data

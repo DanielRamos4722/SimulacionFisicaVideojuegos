@@ -10,15 +10,23 @@ using namespace physx;
 class Particle
 {
 public:
-	Particle(Vector3D pos, Vector3D vel, Vector3D acc, float damp, Vector4 color = { 1.0f, 0.0f, 0.0f, 1.0f }, PxReal size = 2.0f);
+	Particle(Vector3D pos, Vector3D vel, Vector3D acc, float damp, Vector4 color = { 1.0f, 0.0f, 0.0f, 1.0f }, PxReal size = 2.0f, double lifeSpan = 3000.0f, float maxDistance = 10.0f);
 	~Particle();
 
+	void updateTime(double t);
 	virtual void integrate(double t);
+	bool checkAlive();
 protected:
 	Vector3D vel;
 	Vector3D acc;
 	float damp;
-	PxTransform pose;
+	PxTransform* pose;
 	RenderItem* renderItem;
+
+	Vector3D initPos;
+	double aliveTime;
+
+	double lifeSpan;
+	float maxDistance;
 };
 

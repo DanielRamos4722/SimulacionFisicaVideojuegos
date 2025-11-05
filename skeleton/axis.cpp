@@ -11,11 +11,6 @@ Axis::Axis()
 	yAxisItem = new RenderItem(CreateShape(PxSphereGeometry(2)), new PxTransform(yAxisPos), Vector4(0, 1, 0, 1));
 	zAxisItem = new RenderItem(CreateShape(PxSphereGeometry(2)), new PxTransform(zAxisPos), Vector4(0, 0, 1, 1));
 	worldOriginItem = new RenderItem(CreateShape(PxSphereGeometry(2)), new PxTransform(worldOriginPos), Vector4(1, 1, 1, 1));
-
-	RegisterRenderItem(xAxisItem);
-	RegisterRenderItem(yAxisItem);
-	RegisterRenderItem(zAxisItem);
-	RegisterRenderItem(worldOriginItem);
 }
 
 void Axis::derregister()
@@ -24,4 +19,8 @@ void Axis::derregister()
 	DeregisterRenderItem(yAxisItem);
 	DeregisterRenderItem(zAxisItem);
 	DeregisterRenderItem(worldOriginItem);
+	delete xAxisItem;
+	delete yAxisItem;
+	delete zAxisItem;
+	delete worldOriginItem;
 }

@@ -4,6 +4,8 @@
 #include "PxPhysicsAPI.h"
 #include "core.hpp"
 
+#include <iostream>
+
 class RenderItem;
 void RegisterRenderItem(const RenderItem* _item);
 void DeregisterRenderItem(const RenderItem* _item);
