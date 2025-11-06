@@ -16,7 +16,7 @@ public:
     inline float getY() const { return y; }
     inline float getZ() const { return z; }
     float magnitude() const { return std::sqrt(x * x + y * y + z * z); }
-    Vector3D normalize() const { float m = magnitude(); return m == 0 ? *this : Vector3D(x / m, y / m, z / m); }
+    Vector3D normalized() const { float m = magnitude(); return m == 0 ? *this : Vector3D(x / m, y / m, z / m); }
 
     Vector3D operator+(const Vector3D& v) const { return Vector3D(x + v.x, y + v.y, z + v.z); }
     Vector3D operator-(const Vector3D& v) const { return Vector3D(x - v.x, y - v.y, z - v.z); }

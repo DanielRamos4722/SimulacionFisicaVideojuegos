@@ -11,6 +11,7 @@
 
 #include "Projectile.h"
 #include "ParticleSystem.h"
+#include "ForceSystem.h"
 
 #include <iostream>
 
@@ -36,6 +37,7 @@ ContactReportCallback gContactReportCallback;
 
 Axis* axis;
 std::vector<Projectile*> projectiles;
+ForceSystem* forceSystem;
 ParticleSystem* particleSystem;
 
 void shoot()
@@ -78,10 +80,15 @@ void initPhysics(bool interactive)
 
 	axis = new Axis();
 
-	particleSystem = new ParticleSystem();
-	particleSystem->AddParticleGenerator(0.2f, { 25.0f, 20.0f, 10.0f }, { -1.0f, 0.0f, 0.0f }, 50.0f, 10.0f, 0.98f, 3.0f, 100.0f, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0f);
-	particleSystem->AddParticleGenerator(0.2f, { 10.0f, 15.0f, 25.0f }, { 0.0f, 0.0f, -1.0f }, 80.0f, 15.0f, 0.98f, 3.0f, 100.0f, { 0.0f, 1.0f, 0.0f, 1.0f }, 3.0f);
-	particleSystem->AddParticleGenerator(0.1f, { 10.0f, 10.0f, 10.0f }, { -1.0f, 0.0f, -1.0f }, 300.0f, 15.0f, 0.98f, 3.0f, 100.0f, { 1.0f, 1.0f, 0.0f, 1.0f }, 2.5f);
+	forceSystem = new ForceSystem();
+	forceSystem->addGravityForceGenerator({0.0f, -9.81f, 0.0f});
+	forceSystem->addWindForceGenerator({-30.0f, 0.0f, 30.0f}, 0.8f);
+	forceSystem->addWhirlwindForceGenerator(0.8f, 0.0f, { -55.0f, 15.0f, -55.0f }, -700.0f, 50.0f);
+	forceSystem->addExplosionForceGenerator({ 15.0f, 15.0f, 15.0f }, 50000.0f, 200.0f, 10.0f);
+	particleSystem = new ParticleSystem(forceSystem);
+	particleSystem->AddParticleGenerator(0.2f, { 25.0f, 20.0f, 10.0f }, { -1.0f, 0.0f, 0.0f }, 1.0f, 50.0f, 10.0f, 0.98f, 3.0f, 1000.0f, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0f);
+	particleSystem->AddParticleGenerator(0.2f, { 10.0f, 15.0f, 25.0f }, { 0.0f, 0.0f, -1.0f }, 5.0f, 80.0f, 15.0f, 0.98f, 3.0f, 1000.0f, { 0.0f, 1.0f, 0.0f, 1.0f }, 3.0f);
+	particleSystem->AddParticleGenerator(0.1f, { 10.0f, 10.0f, 10.0f }, { -1.0f, 0.0f, -1.0f }, 5.0f, 300.0f, 15.0f, 0.98f, 3.0f, 1000.0f, { 1.0f, 1.0f, 0.0f, 1.0f }, 2.5f);
 	}
 
 

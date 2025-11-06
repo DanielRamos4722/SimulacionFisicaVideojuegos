@@ -1,10 +1,8 @@
 #include "Projectile.h"
 
 Projectile::Projectile(Vector3D pos, Vector3D velR, Vector3D velS, float massR, float damp, Vector4 color, PxReal size)
-	: Particle(pos, velS, Vector3D(), damp, color, size)
+	: Particle(pos, velS, massS = massR* (pow(velR.magnitude(), 2) / pow(velS.magnitude(), 2)), damp, color, size)
 {
-	// Usando formula energia cinetica
-	massS = massR * (pow(velR.magnitude(), 2) / pow(velS.magnitude(), 2));
 	// Equilibramos la influencia de la gravedad al ritmo simulado
 	gravityS = gravityR * (pow(velS.magnitude(), 2) / pow(velR.magnitude(), 2));
 

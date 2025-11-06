@@ -14,6 +14,7 @@ ParticleSystem::~ParticleSystem()
 
 void ParticleSystem::update(double t)
 {
+
 	for(auto particleGenerator : particleGenerators)
 	{
 		particleGenerator->update(t);
@@ -25,6 +26,7 @@ void ParticleSystem::update(double t)
 
 		if (particle->checkAlive())
 		{
+			forceSystem->update(t, particle);
 			particle->integrate(t);
 			++it;
 		}
@@ -36,12 +38,12 @@ void ParticleSystem::update(double t)
 	}
 }
 
-void ParticleSystem::AddParticleGenerator(float frequency, Vector3D pos, Vector3D dir, float avgVel, float velVariance, float damp, double lifeSpan, float maxDistance, Vector4 color, PxReal size)
+void ParticleSystem::AddParticleGenerator(float frequency, Vector3D pos, Vector3D dir, float mass, float avgVel, float velVariance, float damp, double lifeSpan, float maxDistance, Vector4 color, PxReal size)
 {
-	particleGenerators.emplace_back(new ParticleGenerator(this, frequency, pos, dir, avgVel, velVariance, damp, lifeSpan, maxDistance, color, size));
+	particleGenerators.emplace_back(new ParticleGenerator(this, frequency, pos, dir, mass, avgVel, velVariance, damp, lifeSpan, maxDistance, color, size));
 }
 
-void ParticleSystem::AddParticle(Vector3D pos, Vector3D vel, Vector3D acc, float damp, Vector4 color, PxReal size, double lifeSpan, float maxDistance)
+void ParticleSystem::AddParticle(Vector3D pos, Vector3D vel, float mass, float damp, Vector4 color, PxReal size, double lifeSpan, float maxDistance)
 {
-	particles.emplace_back(new Particle(pos, vel, acc, damp, color, size, lifeSpan, maxDistance));
+	particles.emplace_back(new Particle(pos, vel, mass, damp, color, size, lifeSpan, maxDistance));
 }

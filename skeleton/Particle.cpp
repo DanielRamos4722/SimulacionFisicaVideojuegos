@@ -2,8 +2,8 @@
 
 #include <iostream>
 
-Particle::Particle(Vector3D pos, Vector3D vel, Vector3D acc, float damp, Vector4 color, PxReal size, double lifeSpan, float maxDistance)
-	: vel(vel), acc(acc), damp(damp), lifeSpan(lifeSpan), maxDistance(maxDistance), pose(new PxTransform(pos)), initPos(pos), aliveTime(0.0f)
+Particle::Particle(Vector3D pos, Vector3D vel, float mass, float damp, Vector4 color, PxReal size, double lifeSpan, float maxDistance)
+	: vel(vel), mass(mass), damp(damp), lifeSpan(lifeSpan), maxDistance(maxDistance), pose(new PxTransform(pos)), initPos(pos), aliveTime(0.0f)
 {
 	PxShape* shape = CreateShape(PxSphereGeometry(size));
 	renderItem = new RenderItem(shape, pose, color);
@@ -27,9 +27,13 @@ void Particle::updateTime(double t)
 
 void Particle::integrate(double t)
 {
+	acc = force / mass;
+
 	pose->p += vel * t;
 	vel += (acc * t);
 	vel = vel * pow(damp, t);
+
+	force = Vector3D();
 
 }
 
