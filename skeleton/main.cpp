@@ -13,6 +13,8 @@
 #include "ParticleSystem.h"
 #include "ForceSystem.h"
 
+#include "GravityGun.h"
+
 #include <iostream>
 
 std::string display_text = "This is a test";
@@ -39,6 +41,8 @@ Axis* axis;
 std::vector<Projectile*> projectiles;
 ForceSystem* forceSystem;
 ParticleSystem* particleSystem;
+
+GravityGun* gravityGun;
 
 void shoot()
 {
@@ -82,13 +86,15 @@ void initPhysics(bool interactive)
 
 	forceSystem = new ForceSystem();
 	forceSystem->addGravityForceGenerator({0.0f, -9.81f, 0.0f});
-	forceSystem->addWindForceGenerator({-30.0f, 0.0f, 30.0f}, 0.8f);
+	//forceSystem->addWindForceGenerator({-30.0f, 0.0f, 30.0f}, 0.8f);
 	forceSystem->addWhirlwindForceGenerator(0.8f, 0.0f, { -55.0f, 15.0f, -55.0f }, -700.0f, 50.0f);
 	forceSystem->addExplosionForceGenerator({ 15.0f, 15.0f, 15.0f }, 50000.0f, 200.0f, 10.0f);
 	particleSystem = new ParticleSystem(forceSystem);
 	particleSystem->AddParticleGenerator(0.2f, { 25.0f, 20.0f, 10.0f }, { -1.0f, 0.0f, 0.0f }, 1.0f, 50.0f, 10.0f, 0.98f, 3.0f, 1000.0f, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0f);
 	particleSystem->AddParticleGenerator(0.2f, { 10.0f, 15.0f, 25.0f }, { 0.0f, 0.0f, -1.0f }, 5.0f, 80.0f, 15.0f, 0.98f, 3.0f, 1000.0f, { 0.0f, 1.0f, 0.0f, 1.0f }, 3.0f);
 	particleSystem->AddParticleGenerator(0.1f, { 10.0f, 10.0f, 10.0f }, { -1.0f, 0.0f, -1.0f }, 5.0f, 300.0f, 15.0f, 0.98f, 3.0f, 1000.0f, { 1.0f, 1.0f, 0.0f, 1.0f }, 2.5f);
+
+	gravityGun = new GravityGun(GetCamera());
 	}
 
 
@@ -105,6 +111,8 @@ void stepPhysics(bool interactive, double t)
 		projectile->integrate(t);
 	}
 	particleSystem->update(t);
+
+	gravityGun->update(t);
 }
 
 // Function to clean data
@@ -137,10 +145,11 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 	switch(toupper(key))
 	{
-	//case 'B': break;
+	//case 'G': grab/let go;
+	//case 'H': shoot;
 	//case ' ':	break;
-	case 'P':
-		shoot();
+	case 'G':
+		gravityGun->handleParticle(particleSystem->getAimedParticle(GetCamera()->getEye(), GetCamera()->getDir()));
 		break;
 	case ' ':
 	{

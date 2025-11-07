@@ -21,6 +21,8 @@
     <ClCompile Include="WindForce.cpp" />
     <ClCompile Include="WhirlwindForce.cpp" />
     <ClCompile Include="ExplosionForce.cpp" />
+    <ClCompile Include="GravityGun.cpp" />
+    <ClCompile Include="GunForce.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -45,6 +47,8 @@
     <ClInclude Include="WindForce.h" />
     <ClInclude Include="WhirlwindForce.h" />
     <ClInclude Include="ExplosionForce.h" />
+    <ClInclude Include="GravityGun.h" />
+    <ClInclude Include="GunForce.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

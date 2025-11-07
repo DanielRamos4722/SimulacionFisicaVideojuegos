@@ -41,3 +41,9 @@ bool Particle::checkAlive()
 {
 	return ((initPos - pose->p).magnitude() < maxDistance) && (aliveTime < lifeSpan);
 }
+
+void Particle::setGrabbed()
+{
+	lifeSpan = 1000.0f;
+	maxDistance = 1000.0f;
+}

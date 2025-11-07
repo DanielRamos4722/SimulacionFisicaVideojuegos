@@ -24,6 +24,7 @@ public:
 	void addForce(Vector3D force) { this->force += force; };
 	void setForce(Vector3D force) { this->force = force; };
 	void resetForce() { force = Vector3D(); };
+	void setGrabbed();
 protected:
 	Vector3D vel;
 	Vector3D acc;

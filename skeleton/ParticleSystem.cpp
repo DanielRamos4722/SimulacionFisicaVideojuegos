@@ -47,3 +47,35 @@ void ParticleSystem::AddParticle(Vector3D pos, Vector3D vel, float mass, float d
 {
 	particles.emplace_back(new Particle(pos, vel, mass, damp, color, size, lifeSpan, maxDistance));
 }
+
+Particle* ParticleSystem::getAimedParticle(Vector3D cameraPos, Vector3D cameraDir)
+{
+	float radius = 3.0f;         // radio de precision
+	float maxDistance = 400.0f;  // alcance
+	Particle* closest = nullptr;
+	float closestT = maxDistance;
+
+	for (auto* p : particles)
+	{
+		Vector3D objPos = p->getCurrentPos();
+		Vector3D camToObj = objPos - cameraPos;
+
+		float t = camToObj.dot(cameraDir);
+
+		if (t <= 0.0f || t > maxDistance)
+			continue;
+
+		Vector3D closestPoint = cameraPos + cameraDir * t;
+
+		// Distancia lateral al eje
+		float radialDist = (objPos - closestPoint).magnitude();
+
+		if (radialDist < radius && t < closestT)
+		{
+			closest = p;
+			closestT = t;
+		}
+	}
+
+	return closest;
+}
