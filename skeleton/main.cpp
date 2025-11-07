@@ -37,7 +37,7 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-Axis* axis;
+//Axis* axis;
 std::vector<Projectile*> projectiles;
 ForceSystem* forceSystem;
 ParticleSystem* particleSystem;
@@ -82,17 +82,17 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	axis = new Axis();
+	//axis = new Axis();
 
 	forceSystem = new ForceSystem();
 	forceSystem->addGravityForceGenerator({0.0f, -9.81f, 0.0f});
 	//forceSystem->addWindForceGenerator({-30.0f, 0.0f, 30.0f}, 0.8f);
-	forceSystem->addWhirlwindForceGenerator(0.8f, 0.0f, { -55.0f, 15.0f, -55.0f }, -700.0f, 50.0f);
-	forceSystem->addExplosionForceGenerator({ 15.0f, 15.0f, 15.0f }, 50000.0f, 200.0f, 10.0f);
+	//forceSystem->addWhirlwindForceGenerator(0.8f, 0.0f, { -55.0f, 15.0f, -55.0f }, -700.0f, 50.0f);
+	//forceSystem->addExplosionForceGenerator({ 15.0f, 15.0f, 15.0f }, 50000.0f, 200.0f, 10.0f);
 	particleSystem = new ParticleSystem(forceSystem);
-	particleSystem->AddParticleGenerator(0.2f, { 25.0f, 20.0f, 10.0f }, { -1.0f, 0.0f, 0.0f }, 1.0f, 50.0f, 10.0f, 0.98f, 3.0f, 1000.0f, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0f);
-	particleSystem->AddParticleGenerator(0.2f, { 10.0f, 15.0f, 25.0f }, { 0.0f, 0.0f, -1.0f }, 5.0f, 80.0f, 15.0f, 0.98f, 3.0f, 1000.0f, { 0.0f, 1.0f, 0.0f, 1.0f }, 3.0f);
-	particleSystem->AddParticleGenerator(0.1f, { 10.0f, 10.0f, 10.0f }, { -1.0f, 0.0f, -1.0f }, 5.0f, 300.0f, 15.0f, 0.98f, 3.0f, 1000.0f, { 1.0f, 1.0f, 0.0f, 1.0f }, 2.5f);
+	particleSystem->AddParticleGenerator(0.5f, { 0.0f, 10.0f, 25.0f }, { -0.5f, 1.0f, -0.5f }, 1.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 1.0f, 1.0f, 0.0f, 1.0f }, 1.0f);
+	particleSystem->AddParticleGenerator(0.5f, { 12.0f, 10.0f, 12.0f }, { -0.5f, 1.0f, -0.5f }, 4.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0f);
+	particleSystem->AddParticleGenerator(0.5f, { 25.0f, 10.0f, 0.0f }, { -0.5f, 1.0f, -0.5f }, 8.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 0.0f, 1.0f, 0.0f, 1.0f }, 3.0f);
 
 	gravityGun = new GravityGun(GetCamera());
 	}
@@ -119,7 +119,7 @@ void stepPhysics(bool interactive, double t)
 // Add custom code to the begining of the function
 void cleanupPhysics(bool interactive)
 {
-	axis->derregister();
+	//axis->derregister();
 	for (auto projectile : projectiles) {
 		delete projectile;
 	}
@@ -150,6 +150,9 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	//case ' ':	break;
 	case 'G':
 		gravityGun->handleParticle(particleSystem->getAimedParticle(GetCamera()->getEye(), GetCamera()->getDir()));
+		break;
+	case 'H':
+		gravityGun->shootParticle();
 		break;
 	case ' ':
 	{

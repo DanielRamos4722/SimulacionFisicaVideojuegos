@@ -18,7 +18,7 @@ GunForce::processForce(double t, Particle* particle)
     float forceFarMag = farForce * (1.0f - (distance / radius));
     Vector3D forceFar = dir * forceFarMag;
 
-    // Fuerza cercana: Amortiguamos segun llega. Cuando este suficientemente cerca del centro deja de actuar atraccion.
+    // Fuerza cercana: Amortiguamos segun llega.
     Vector3D springForce = dir * (nearStiff * mass * distance);
     Vector3D dampingForce = vel * (-damping * mass);
     Vector3D forceNear = springForce + dampingForce;

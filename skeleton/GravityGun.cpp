@@ -11,8 +11,9 @@ GravityGun::GravityGun(const Camera* camera) : camera(camera), grabbing(false)
     poseCrosshair = new PxTransform(camera->getEye() + camera->getDir() * 2.0f);
     setCrosshair();
     crosshair = new RenderItem(crosshairSphere, poseCrosshair, { 1.0f, 1.0f, 1.0f, 1.0f });
-
-    gunForce = new GunForce(pose, 10.0f, 20.0f, 9.0f, 400.0f);
+    radius = 400.0f;
+    shootForce = 300000.0f;
+    gunForce = new GunForce(pose, 10.0f, 20.0f, 9.0f, radius);
 }
 
 GravityGun::~GravityGun()
@@ -82,6 +83,19 @@ void GravityGun::handleParticle(Particle* particle)
     }
     else
     {
+        grabbing = false;
+        activeParticle = nullptr;
+    }
+}
+
+void GravityGun::shootParticle()
+{
+    if (activeParticle != nullptr)
+    {
+        float distance = (activeParticle->getCurrentPos() - pose->p).magnitude();
+        //Cuanto mas lejos del centro menos fuerza de disparo
+        float factor = 1.0f - (distance / radius);
+        activeParticle->addForce(camera->getDir() * shootForce * factor);
         grabbing = false;
         activeParticle = nullptr;
     }

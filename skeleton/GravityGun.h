@@ -11,6 +11,7 @@ public:
 	void updateTransform();
 	void setCrosshair();
 	void handleParticle(Particle* particle);
+	void shootParticle();
 
 private:
 	const Camera* camera;
@@ -20,6 +21,9 @@ private:
 	PxTransform* poseCrosshair;
 	RenderItem* crosshair;
 	bool grabbing;
+
+	float shootForce;
+	float radius;
 
 	GunForce* gunForce;
 	Particle* activeParticle = nullptr;
