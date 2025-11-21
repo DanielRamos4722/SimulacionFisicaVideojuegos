@@ -23,6 +23,9 @@
     <ClCompile Include="ExplosionForce.cpp" />
     <ClCompile Include="GravityGun.cpp" />
     <ClCompile Include="GunForce.cpp" />
+    <ClCompile Include="SpringForce.cpp" />
+    <ClCompile Include="AnchoredSpringForce.cpp" />
+    <ClCompile Include="BuoyancyForce.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -49,6 +52,9 @@
     <ClInclude Include="ExplosionForce.h" />
     <ClInclude Include="GravityGun.h" />
     <ClInclude Include="GunForce.h" />
+    <ClInclude Include="SpringForce.h" />
+    <ClInclude Include="AnchoredSpringForce.h" />
+    <ClInclude Include="BuoyancyForce.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

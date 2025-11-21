@@ -7,6 +7,8 @@ Particle::Particle(Vector3D pos, Vector3D vel, float mass, float damp, Vector4 c
 {
 	PxShape* shape = CreateShape(PxSphereGeometry(size));
 	renderItem = new RenderItem(shape, pose, color);
+
+	limitedTime = (lifeSpan != 0.0f);
 }
 
 Particle::~Particle()
@@ -16,7 +18,6 @@ Particle::~Particle()
 		DeregisterRenderItem(renderItem);
 		delete renderItem;
 		delete pose;
-
 	}
 }
 
@@ -39,11 +40,11 @@ void Particle::integrate(double t)
 
 bool Particle::checkAlive()
 {
-	return ((initPos - pose->p).magnitude() < maxDistance) && (aliveTime < lifeSpan);
+	return !limitedTime || ((initPos - pose->p).magnitude() < maxDistance) && (aliveTime < lifeSpan);
 }
 
 void Particle::setGrabbed()
 {
-	lifeSpan = 1000.0f;
+	limitedTime = false;
 	maxDistance = 1000.0f;
 }
