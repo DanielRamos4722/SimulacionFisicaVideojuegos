@@ -45,7 +45,7 @@ void ParticleSystem::AddParticleGenerator(float frequency, Vector3D pos, Vector3
 
 void ParticleSystem::AddParticle(Vector3D pos, Vector3D vel, float mass, float damp, Vector4 color, PxReal size, double lifeSpan, float maxDistance)
 {
-	particles.emplace_back(new Particle(pos, vel, mass, damp, color, size, lifeSpan, maxDistance));
+	particles.emplace_back(new Particle(pos, vel, mass, damp, size, color, lifeSpan, maxDistance));
 }
 
 Particle* ParticleSystem::getAimedParticle(Vector3D cameraPos, Vector3D cameraDir)

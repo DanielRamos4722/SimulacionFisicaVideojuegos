@@ -2,7 +2,7 @@
 
 SpringForce::SpringForce(double k, double restingLength, const Vector3D& anchorPos) : k(k), restingLength(restingLength)
 {
-	other = new Particle(anchorPos, Vector3D(), 1.0f, 0.98f);
+	other = new Particle(anchorPos, Vector3D(), 1.0f, 0.98f, 2.0f);
 }
 
 void

@@ -10,7 +10,8 @@ using namespace physx;
 class Particle
 {
 public:
-	Particle(Vector3D pos, Vector3D vel, float mass, float damp, Vector4 color = { 1.0f, 0.0f, 0.0f, 1.0f }, PxReal size = 2.0f, double lifeSpan = 0.0f, float maxDistance = 10.0f);
+	Particle(Vector3D pos, Vector3D vel, float mass, float damp, PxReal size, Vector4 color = { 1.0f, 0.0f, 0.0f, 1.0f }, double lifeSpan = 0.0f, float maxDistance = 10.0f);
+	Particle(Vector3D pos, Vector3D vel, float mass, float damp, Vector3D size, Vector4 color = { 1.0f, 0.0f, 0.0f, 1.0f }, double lifeSpan = 0.0f, float maxDistance = 10.0f);
 	~Particle();
 
 	void updateTime(double t);
