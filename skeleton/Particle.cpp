@@ -12,6 +12,7 @@ Particle::Particle(Vector3D pos, Vector3D vel, float mass, float damp, PxReal si
 }
 
 Particle::Particle(Vector3D pos, Vector3D vel, float mass, float damp, Vector3D size, Vector4 color, double lifeSpan, float maxDistance)
+	: vel(vel), mass(mass), damp(damp), lifeSpan(lifeSpan), maxDistance(maxDistance), pose(new PxTransform(pos)), initPos(pos), aliveTime(0.0f)
 {
 	PxShape* shape = CreateShape(PxBoxGeometry(size));
 	renderItem = new RenderItem(shape, pose, color);

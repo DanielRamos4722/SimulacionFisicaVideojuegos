@@ -17,7 +17,6 @@ BuoyancyForce::processForce(double t, Particle* particle)
         immersed = 0.0;
     }
     else if (h0 - h > height * 0.5) {
-        // Totally immersed
         immersed = 1.0;
     }
     else {

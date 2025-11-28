@@ -36,3 +36,18 @@ void ForceSystem::addExplosionForceGenerator(Vector3D center, float strength, fl
 {
 	forceGenerators.emplace_back(new ExplosionForce(center, strength, radius, decayTime));
 }
+
+void ForceSystem::addSpringForce(double k, double restingLength, Particle* other)
+{
+	forceGenerators.emplace_back(new SpringForce(k, restingLength, other));
+}
+
+void ForceSystem::addAnchoredSpringForce(double k, double resting, const Vector3D& anchorPos)
+{
+	forceGenerators.emplace_back(new AnchoredSpringForce(k, resting, anchorPos));
+}
+
+void ForceSystem::addBuoyancyForce(float h, float V, float d)
+{
+	forceGenerators.emplace_back(new BuoyancyForce(h, V, d));
+}

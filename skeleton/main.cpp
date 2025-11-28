@@ -94,6 +94,8 @@ void initPhysics(bool interactive)
 	particleSystem->AddParticleGenerator(0.5f, { 12.0f, 10.0f, 12.0f }, { -0.5f, 1.0f, -0.5f }, 4.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0f);
 	particleSystem->AddParticleGenerator(0.5f, { 25.0f, 10.0f, 0.0f }, { -0.5f, 1.0f, -0.5f }, 8.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 0.0f, 1.0f, 0.0f, 1.0f }, 3.0f);
 
+	forceSystem->addBuoyancyForce(-50.0f, 2.0f, 1000.0f);
+
 	gravityGun = new GravityGun(GetCamera());
 	}
 

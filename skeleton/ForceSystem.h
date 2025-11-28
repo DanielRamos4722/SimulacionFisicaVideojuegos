@@ -7,6 +7,10 @@
 #include "WhirlwindForce.h"
 #include "ExplosionForce.h"
 
+#include "SpringForce.h"
+#include "AnchoredSpringForce.h"
+#include "BuoyancyForce.h"
+
 class ForceSystem
 {
 public:
@@ -17,6 +21,10 @@ public:
 	void addWindForceGenerator(Vector3D windVel, float linearDragCoeff, float quadraticDragCoeff = 0.0f);
 	void addWhirlwindForceGenerator(float linearDragCoeff, float quadraticDragCoeff, Vector3D center, float strength, float radius);
 	void addExplosionForceGenerator(Vector3D center, float strength, float radius, float decayTime);
+
+	void addSpringForce(double k, double restingLength, Particle* other);
+	void addAnchoredSpringForce(double k, double resting, const Vector3D& anchorPos);
+	void addBuoyancyForce(float h, float V, float d);
 
 private:
 	std::vector<ForceGenerator*> forceGenerators;
