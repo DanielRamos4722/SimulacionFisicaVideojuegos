@@ -9,6 +9,7 @@ public:
 	SpringForce(double k, double restingLength, const Vector3D& anchorPos);
 	void processForce(double t, Particle* particle) override;
 	inline void setK(double k) { this->k = k; };
+	inline void increaseK() { k += 10.0; };
 	~SpringForce() { delete other; };
 protected:
 	double k;

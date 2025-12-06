@@ -17,6 +17,9 @@ public:
 	ForceSystem() {};
 	~ForceSystem();
 	void update(double t, Particle* particle);
+	void updateAnchoredSprings(double t, std::vector<Particle*> anchoredSpringParticles);
+	void updateSprings(double t, std::vector<std::pair<Particle*, Particle*>> springParticles);
+
 	void addGravityForceGenerator(Vector3D gravityForce);
 	void addWindForceGenerator(Vector3D windVel, float linearDragCoeff, float quadraticDragCoeff = 0.0f);
 	void addWhirlwindForceGenerator(float linearDragCoeff, float quadraticDragCoeff, Vector3D center, float strength, float radius);
@@ -26,7 +29,11 @@ public:
 	void addAnchoredSpringForce(double k, double resting, const Vector3D& anchorPos);
 	void addBuoyancyForce(float h, float V, float d);
 
+	void increaseKfirstAnchoredSpring();
+
 private:
 	std::vector<ForceGenerator*> forceGenerators;
+	std::vector<SpringForce*> springGenerators;
+	std::vector<SpringForce*> anchoredSpringGenerators;
 };
 

@@ -90,11 +90,22 @@ void initPhysics(bool interactive)
 	//forceSystem->addWhirlwindForceGenerator(0.8f, 0.0f, { -55.0f, 15.0f, -55.0f }, -700.0f, 50.0f);
 	//forceSystem->addExplosionForceGenerator({ 15.0f, 15.0f, 15.0f }, 50000.0f, 200.0f, 10.0f);
 	particleSystem = new ParticleSystem(forceSystem);
-	particleSystem->AddParticleGenerator(0.5f, { 0.0f, 10.0f, 25.0f }, { -0.5f, 1.0f, -0.5f }, 1.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 1.0f, 1.0f, 0.0f, 1.0f }, 1.0f);
-	particleSystem->AddParticleGenerator(0.5f, { 12.0f, 10.0f, 12.0f }, { -0.5f, 1.0f, -0.5f }, 4.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0f);
-	particleSystem->AddParticleGenerator(0.5f, { 25.0f, 10.0f, 0.0f }, { -0.5f, 1.0f, -0.5f }, 8.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 0.0f, 1.0f, 0.0f, 1.0f }, 3.0f);
+	//particleSystem->AddParticleGenerator(0.5f, { 0.0f, 10.0f, 25.0f }, { -0.5f, 1.0f, -0.5f }, 10.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 1.0f, 1.0f, 0.0f, 1.0f }, 1.0f);
+	//particleSystem->AddParticleGenerator(0.5f, { 12.0f, 10.0f, 12.0f }, { -0.5f, 1.0f, -0.5f }, 40.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0f);
+	//particleSystem->AddParticleGenerator(0.5f, { 25.0f, 10.0f, 0.0f }, { -0.5f, 1.0f, -0.5f }, 80.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 0.0f, 1.0f, 0.0f, 1.0f }, 3.0f);
 
-	forceSystem->addBuoyancyForce(-50.0f, 2.0f, 1000.0f);
+	particleSystem->AddAnchoredSpringParticle({ 0.0f, 10.0f, 25.0f }, Vector3D(), 10.0f, 0.98, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0, 0.0, 1000.0);
+	forceSystem->addAnchoredSpringForce(10.0, 30.0, { 0.0f, 30.0f, 25.0f });
+
+	Particle* springParticle = new Particle({ 15.0f, 40.0f, 0.0f }, Vector3D(), 40.0f, 0.98, 2.0, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.0, 1000.0);
+	Particle* springOther = new Particle({ 20.0f, 40.0f, 0.0f }, Vector3D(), 40.0f, 0.98, 2.0, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.0, 1000.0);
+	particleSystem->AddSpringParticles(springParticle, springOther);
+	forceSystem->addSpringForce(10.0, 30.0, springOther);
+
+	Particle* box = new Particle(Vector3(-50, -50, -30), Vector3(0, 0, 0), 25.0f, 0.98f, Vector3(20.0f, 40.0f, 20.0f), Vector4(1.0f, 1.0f, 0.0f, 1.0f));
+	particleSystem->AddParticle(box);
+
+	forceSystem->addBuoyancyForce(-50.0f, 0.08f, 1000.0f);
 
 	gravityGun = new GravityGun(GetCamera());
 	}
@@ -156,6 +167,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'H':
 		gravityGun->shootParticle();
 		break;
+	case 'M':
+		forceSystem->increaseKfirstAnchoredSpring();
 	case ' ':
 	{
 		break;

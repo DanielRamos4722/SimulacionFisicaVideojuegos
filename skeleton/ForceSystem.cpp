@@ -17,6 +17,24 @@ void ForceSystem::update(double t, Particle* particle)
 	}
 }
 
+void ForceSystem::updateAnchoredSprings(double t, std::vector<Particle*> anchoredSpringParticles)
+{
+	for (int i = 0; i < anchoredSpringGenerators.size(); i++)
+	{
+		anchoredSpringGenerators[i]->update(t);
+		anchoredSpringGenerators[i]->processForce(t, anchoredSpringParticles[i]);
+	}
+}
+
+void ForceSystem::updateSprings(double t, std::vector<std::pair<Particle*, Particle*>> springParticles)
+{
+	for (int i = 0; i < springGenerators.size(); i++)
+	{
+		springGenerators[i]->update(t);
+		springGenerators[i]->processForce(t, springParticles[i].first);
+	}
+}
+
 void ForceSystem::addGravityForceGenerator(Vector3D gravityForce)
 {
 	forceGenerators.emplace_back(new GravityForce(gravityForce));
@@ -39,15 +57,23 @@ void ForceSystem::addExplosionForceGenerator(Vector3D center, float strength, fl
 
 void ForceSystem::addSpringForce(double k, double restingLength, Particle* other)
 {
-	forceGenerators.emplace_back(new SpringForce(k, restingLength, other));
+	springGenerators.emplace_back(new SpringForce(k, restingLength, other));
 }
 
 void ForceSystem::addAnchoredSpringForce(double k, double resting, const Vector3D& anchorPos)
 {
-	forceGenerators.emplace_back(new AnchoredSpringForce(k, resting, anchorPos));
+	anchoredSpringGenerators.emplace_back(new AnchoredSpringForce(k, resting, anchorPos));
 }
 
 void ForceSystem::addBuoyancyForce(float h, float V, float d)
 {
 	forceGenerators.emplace_back(new BuoyancyForce(h, V, d));
+}
+
+void ForceSystem::increaseKfirstAnchoredSpring()
+{
+	if (anchoredSpringGenerators[0] != nullptr)
+	{
+		anchoredSpringGenerators[0]->increaseK();
+	}
 }

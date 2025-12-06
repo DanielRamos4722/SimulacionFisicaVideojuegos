@@ -10,11 +10,16 @@ ParticleSystem::~ParticleSystem()
 	{
 		delete particle;
 	}
+	for (auto particle : anchoredSpringParticles)
+	{
+		delete particle;
+	}
 }
 
 void ParticleSystem::update(double t)
 {
-
+	forceSystem->updateSprings(t, springParticles);
+	forceSystem->updateAnchoredSprings(t, anchoredSpringParticles);
 	for(auto particleGenerator : particleGenerators)
 	{
 		particleGenerator->update(t);
@@ -46,6 +51,25 @@ void ParticleSystem::AddParticleGenerator(float frequency, Vector3D pos, Vector3
 void ParticleSystem::AddParticle(Vector3D pos, Vector3D vel, float mass, float damp, Vector4 color, PxReal size, double lifeSpan, float maxDistance)
 {
 	particles.emplace_back(new Particle(pos, vel, mass, damp, size, color, lifeSpan, maxDistance));
+}
+
+void ParticleSystem::AddParticle(Particle* particle)
+{
+	particles.push_back(particle);
+}
+
+void ParticleSystem::AddSpringParticles(Particle* springParticle, Particle* springOther)
+{
+	particles.push_back(springParticle);
+	particles.push_back(springOther);
+	springParticles.push_back(std::make_pair(springParticle, springOther));
+}
+
+void ParticleSystem::AddAnchoredSpringParticle(Vector3D pos, Vector3D vel, float mass, float damp, Vector4 color, PxReal size, double lifeSpan, float maxDistance)
+{
+	Particle* particle = new Particle(pos, vel, mass, damp, size, color, lifeSpan, maxDistance);
+	particles.push_back(particle);
+	anchoredSpringParticles.push_back(particle);
 }
 
 Particle* ParticleSystem::getAimedParticle(Vector3D cameraPos, Vector3D cameraDir)
