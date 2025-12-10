@@ -26,6 +26,8 @@
     <ClCompile Include="SpringForce.cpp" />
     <ClCompile Include="AnchoredSpringForce.cpp" />
     <ClCompile Include="BuoyancyForce.cpp" />
+    <ClCompile Include="PlayerManager.cpp" />
+    <ClCompile Include="LevelManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -55,6 +57,8 @@
     <ClInclude Include="SpringForce.h" />
     <ClInclude Include="AnchoredSpringForce.h" />
     <ClInclude Include="BuoyancyForce.h" />
+    <ClInclude Include="PlayerManager.h" />
+    <ClInclude Include="LevelManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

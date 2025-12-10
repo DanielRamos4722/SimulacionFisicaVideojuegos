@@ -13,7 +13,9 @@
 #include "ParticleSystem.h"
 #include "ForceSystem.h"
 
+#include "PlayerManager.h"
 #include "GravityGun.h"
+#include "LevelManager.h"
 
 #include <iostream>
 
@@ -42,7 +44,10 @@ std::vector<Projectile*> projectiles;
 ForceSystem* forceSystem;
 ParticleSystem* particleSystem;
 
+PlayerManager* gPlayer;
 GravityGun* gravityGun;
+
+LevelManager* levelManager;
 
 void shoot()
 {
@@ -107,7 +112,10 @@ void initPhysics(bool interactive)
 
 	forceSystem->addBuoyancyForce(-50.0f, 0.08f, 1000.0f);
 
+	gPlayer = new PlayerManager(gPhysics, gScene, GetCamera(), Vector3D());
 	gravityGun = new GravityGun(GetCamera());
+
+	levelManager = new LevelManager(gPhysics, gScene);
 	}
 
 
@@ -125,6 +133,7 @@ void stepPhysics(bool interactive, double t)
 	}
 	particleSystem->update(t);
 
+	gPlayer->update(t);
 	gravityGun->update(t);
 }
 
@@ -151,12 +160,26 @@ void cleanupPhysics(bool interactive)
 	gFoundation->release();
 }
 
+void handleMouse(int button, int state)
+{
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		gravityGun->shootParticle();
+	}
+
+	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
+	{
+		gravityGun->handleParticle(particleSystem->getAimedParticle(GetCamera()->getEye(), GetCamera()->getDir()));
+	}
+}
+
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
 
-	switch(toupper(key))
+	gPlayer->processKey(toupper(key));
+	/*switch (toupper(key))
 	{
 	//case 'G': grab/let go;
 	//case 'H': shoot;
@@ -175,7 +198,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	}
 	default:
 		break;
-	}
+	}*/
 }
 
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)

@@ -15,6 +15,9 @@ public:
     inline float getX() const { return x; }
     inline float getY() const { return y; }
     inline float getZ() const { return z; }
+    inline void setX(float x) { this->x = x; }
+    inline void setY(float y) { this->y = y; }
+    inline void setZ(float z) { this->z = z; }
     float magnitude() const { return std::sqrt(x * x + y * y + z * z); }
     Vector3D normalized() const { float m = magnitude(); return m == 0 ? *this : Vector3D(x / m, y / m, z / m); }
 

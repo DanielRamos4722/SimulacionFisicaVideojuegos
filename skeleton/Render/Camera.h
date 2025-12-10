@@ -43,11 +43,14 @@ public:
 	void				handleMouse(int button, int state, int x, int y);
 	bool				handleKey(unsigned char key, int x, int y, float speed = 1.0f);
 	void				handleMotion(int x, int y);
+	void                handleMotionRelative(int dx, int dy);
 	void				handleAnalogMove(float x, float y);
 
 	physx::PxVec3		getEye()	const;
 	physx::PxVec3		getDir()	const;
 	physx::PxTransform	getTransform() const;
+
+	void setPosition(physx::PxVec3 newPos);
 private:
 	physx::PxVec3	mEye;
 	physx::PxVec3	mDir;

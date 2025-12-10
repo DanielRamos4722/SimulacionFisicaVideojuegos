@@ -5,6 +5,8 @@
 #include "core.hpp"
 #include "RenderUtils.hpp"
 
+#include "PlayerManager.h"
+
 
 using namespace physx;
 
@@ -12,8 +14,10 @@ extern void initPhysics(bool interactive);
 extern void stepPhysics(bool interactive, double t);	
 extern void cleanupPhysics(bool interactive);
 extern void keyPress(unsigned char key, const PxTransform& camera);
+extern void handleMouse(int button, int state);
 extern PxPhysics* gPhysics;
 extern PxMaterial* gMaterial;
+extern PlayerManager* gPlayer;
 
 std::vector<const RenderItem*> gRenderItems;
 
@@ -49,21 +53,54 @@ namespace
 
 void motionCallback(int x, int y)
 {
-	sCamera->handleMotion(x, y);
+	static int winWidth = glutGet(GLUT_WINDOW_WIDTH);
+	static int winHeight = glutGet(GLUT_WINDOW_HEIGHT);
+
+	int centerX = winWidth / 2;
+	int centerY = winHeight / 2;
+
+	int dx = x - centerX;
+	int dy = y - centerY;
+
+	sCamera->handleMotionRelative(dx, dy);
+
+	glutWarpPointer(centerX, centerY);
 }
 
 void keyboardCallback(unsigned char key, int x, int y)
 {
-	if(key==27)
+	if (key == 27)
 		exit(0);
 
-	if(!sCamera->handleKey(key, x, y))
-		keyPress(key, sCamera->getTransform());
+	if (gPlayer)
+		gPlayer->onKeyDown(key);
+}
+
+void keyboardUpCallback(unsigned char key, int x, int y)
+{
+	if (gPlayer)
+		gPlayer->onKeyUp(key);
+}
+
+void passiveMotionCallback(int x, int y)
+{
+	static int winWidth = glutGet(GLUT_WINDOW_WIDTH);
+	static int winHeight = glutGet(GLUT_WINDOW_HEIGHT);
+
+	int centerX = winWidth / 2;
+	int centerY = winHeight / 2;
+
+	int dx = x - centerX;
+	int dy = y - centerY;
+
+	sCamera->handleMotionRelative(dx, dy);
+
+	glutWarpPointer(centerX, centerY);
 }
 
 void mouseCallback(int button, int state, int x, int y)
 {
-	sCamera->handleMouse(button, state, x, y);
+	handleMouse(button, state);
 }
 
 void idleCallback()
@@ -145,9 +182,13 @@ void renderLoop()
 	glutIdleFunc(idleCallback);
 	glutDisplayFunc(renderCallback);
 	glutKeyboardFunc(keyboardCallback);
+	glutKeyboardUpFunc(keyboardUpCallback);
+	glutIgnoreKeyRepeat(1);
 	glutMouseFunc(mouseCallback);
 	glutMotionFunc(motionCallback);
+	glutPassiveMotionFunc(passiveMotionCallback);
 	motionCallback(0,0);
+	glutSetCursor(GLUT_CURSOR_NONE);
 
 	atexit(exitCallback);
 

@@ -96,6 +96,28 @@ void Camera::handleMotion(int x, int y)
 	mMouseY = y;
 }
 
+void Camera::handleMotionRelative(int dx, int dy)
+{
+	const float sensitivity = 0.002f;
+
+	float yaw = atan2f(mDir.x, -mDir.z);
+	float pitch = asinf(mDir.y);
+
+	yaw += dx * sensitivity;
+	pitch -= dy * sensitivity;
+
+	const float limit = physx::PxPi * 0.49f;
+	if (pitch > limit) pitch = limit;
+	if (pitch < -limit) pitch = -limit;
+
+	physx::PxVec3 newDir;
+	newDir.x = cosf(pitch) * sinf(yaw);
+	newDir.y = sinf(pitch);
+	newDir.z = -cosf(pitch) * cosf(yaw);
+
+	mDir = newDir.getNormalized();
+}
+
 PxTransform Camera::getTransform() const
 {
 	PxVec3 viewY = mDir.cross(PxVec3(0,1,0));
@@ -105,6 +127,11 @@ PxTransform Camera::getTransform() const
 
 	PxMat33 m(mDir.cross(viewY), viewY, -mDir);
 	return PxTransform(mEye, PxQuat(m));
+}
+
+void Camera::setPosition(physx::PxVec3 newPos)
+{
+	mEye = newPos;
 }
 
 PxVec3 Camera::getEye() const
