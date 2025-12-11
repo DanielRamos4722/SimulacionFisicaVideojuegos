@@ -11,12 +11,16 @@
 #include "AnchoredSpringForce.h"
 #include "BuoyancyForce.h"
 
+#include "SolidBox.h"
+
 class ForceSystem
 {
 public:
 	ForceSystem() {};
 	~ForceSystem();
-	void update(double t, Particle* particle);
+	void update(double t);
+	void updateParticle(double t, Particle* particle);
+	void updateSolid(double t, SolidBox* box);
 	void updateAnchoredSprings(double t, std::vector<Particle*> anchoredSpringParticles);
 	void updateSprings(double t, std::vector<std::pair<Particle*, Particle*>> springParticles);
 

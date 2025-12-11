@@ -31,7 +31,7 @@ void ParticleSystem::update(double t)
 
 		if (particle->checkAlive())
 		{
-			forceSystem->update(t, particle);
+			forceSystem->updateParticle(t, particle);
 			particle->integrate(t);
 			++it;
 		}

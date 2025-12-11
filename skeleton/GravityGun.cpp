@@ -30,7 +30,11 @@ void GravityGun::update(double t)
 {
     updateTransform();
     setCrosshair();
-    if (activeParticle != nullptr)
+    if (activeBox != nullptr)
+    {
+        gunForce->processForce(t, activeBox);
+    }
+    else if (activeParticle != nullptr)
     {
         gunForce->processForce(t, activeParticle);
     }
@@ -69,9 +73,26 @@ void GravityGun::setCrosshair()
     poseCrosshair->p = pos;
 }
 
-void GravityGun::handleParticle(Particle* particle)
+void GravityGun::handleSolid(SolidBox* box)
 {
     if (!grabbing)
+    {
+        if (box != nullptr)
+        {
+            grabbing = true;
+            activeBox = box;
+        }
+    }
+    else
+    {
+        grabbing = (activeParticle != nullptr);
+        activeBox = nullptr;
+    }
+}
+
+void GravityGun::handleParticle(Particle* particle)
+{
+    if (!grabbing && activeBox == nullptr)
     {
         if (particle != nullptr)
         {
@@ -83,14 +104,24 @@ void GravityGun::handleParticle(Particle* particle)
     }
     else
     {
-        grabbing = false;
+        grabbing = (activeBox != nullptr);
         activeParticle = nullptr;
     }
 }
 
-void GravityGun::shootParticle()
+void GravityGun::shoot()
 {
-    if (activeParticle != nullptr)
+    if (activeBox != nullptr)
+    {
+        PxRigidDynamic* rigid = activeBox->getRigid();
+        float distance = (rigid->getGlobalPose().p - pose->p).magnitude();
+        //Cuanto mas lejos del centro menos fuerza de disparo
+        float factor = 1.0f - (distance / radius);
+        rigid->addForce(camera->getDir() * shootForce * factor * 0.1f, PxForceMode::eIMPULSE);
+        grabbing = false;
+        activeBox = nullptr;
+    }
+    else if (activeParticle != nullptr)
     {
         float distance = (activeParticle->getCurrentPos() - pose->p).magnitude();
         //Cuanto mas lejos del centro menos fuerza de disparo

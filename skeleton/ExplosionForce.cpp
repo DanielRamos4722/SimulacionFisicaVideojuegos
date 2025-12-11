@@ -1,6 +1,25 @@
 #include "ExplosionForce.h"
 
 void
+ExplosionForce::processForce(double t, SolidBox* box)
+{
+    if (go)
+    {
+        PxRigidDynamic* rigid = box->getRigid();
+        Vector3D diff = rigid->getGlobalPose().p - center;
+        float distance = (rigid->getGlobalPose().p - center).magnitude();
+
+        if (distance < radius)
+        {
+            Vector3D dir = diff.normalized();
+            float strength = (K / (distance * distance)) * exp(-aliveTime / decayTime);
+            Vector3D force = dir * strength;
+            rigid->addForce(force);
+        }
+    }
+}
+
+void
 ExplosionForce::processForce(double t, Particle* particle)
 {
     if (go)

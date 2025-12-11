@@ -2,17 +2,17 @@
 
 using namespace physx;
 
-PlayerManager::PlayerManager(PxPhysics* gPhysics, PxScene* gScene, Camera* camera, Vector3D initPos) : gPhysics(gPhysics), gScene(gScene), mCamera(camera), speed(100.0)
+PlayerManager::PlayerManager(PxPhysics* gPhysics, PxScene* gScene, Camera* camera, Vector3D initPos) : gPhysics(gPhysics), gScene(gScene), mCamera(camera), speed(25.0)
 {
     PxVec3 halfExtents(0.4f, 4.0f, 0.4f);
     PxBoxGeometry geometry(halfExtents);
 
-    PxMaterial* material = gPhysics->createMaterial(0.5f, 0.5f, 0.1f);
+    PxMaterial* material = gPhysics->createMaterial(1.0f, 1.0f, 0.0f);
 
     PxTransform transform(PxVec3(initPos.getX(), initPos.getY(), initPos.getZ()));
 
     playerBody = gPhysics->createRigidDynamic(transform);
-    playerBody->setMass(70.0f);                 // masa del jugador
+    playerBody->setMass(0.1f);                 // masa del jugador
     playerBody->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
 
     // Evitar que el jugador se tumbe
@@ -47,7 +47,7 @@ void PlayerManager::move()
     if (keys['D']) moveDir += right;
 
     moveDir = moveDir.normalized() * speed;
-    playerBody->setLinearVelocity(Vector3D(moveDir.getX(), playerBody->getLinearVelocity().y, moveDir.getZ()));
+    playerBody->setLinearVelocity(Vector3D(moveDir.getX(), 0.0f, moveDir.getZ()));
 }
 
 void PlayerManager::processKey(unsigned char key)

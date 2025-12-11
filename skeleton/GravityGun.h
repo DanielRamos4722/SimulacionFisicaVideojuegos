@@ -10,8 +10,9 @@ public:
 	void update(double t);
 	void updateTransform();
 	void setCrosshair();
+	void handleSolid(SolidBox* box);
 	void handleParticle(Particle* particle);
-	void shootParticle();
+	void shoot();
 
 private:
 	const Camera* camera;
@@ -27,5 +28,6 @@ private:
 
 	GunForce* gunForce;
 	Particle* activeParticle = nullptr;
+	SolidBox* activeBox = nullptr;
 };
 

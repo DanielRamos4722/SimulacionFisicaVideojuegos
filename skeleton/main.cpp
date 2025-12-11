@@ -13,6 +13,7 @@
 #include "ParticleSystem.h"
 #include "ForceSystem.h"
 
+#include "SolidSystem.h"
 #include "PlayerManager.h"
 #include "GravityGun.h"
 #include "LevelManager.h"
@@ -43,6 +44,8 @@ ContactReportCallback gContactReportCallback;
 std::vector<Projectile*> projectiles;
 ForceSystem* forceSystem;
 ParticleSystem* particleSystem;
+
+SolidSystem* solidSystem;
 
 PlayerManager* gPlayer;
 GravityGun* gravityGun;
@@ -90,11 +93,12 @@ void initPhysics(bool interactive)
 	//axis = new Axis();
 
 	forceSystem = new ForceSystem();
-	forceSystem->addGravityForceGenerator({0.0f, -9.81f, 0.0f});
+	//forceSystem->addGravityForceGenerator({0.0f, -9.81f, 0.0f});
 	//forceSystem->addWindForceGenerator({-30.0f, 0.0f, 30.0f}, 0.8f);
 	//forceSystem->addWhirlwindForceGenerator(0.8f, 0.0f, { -55.0f, 15.0f, -55.0f }, -700.0f, 50.0f);
 	//forceSystem->addExplosionForceGenerator({ 15.0f, 15.0f, 15.0f }, 50000.0f, 200.0f, 10.0f);
 	particleSystem = new ParticleSystem(forceSystem);
+	solidSystem = new SolidSystem(forceSystem);
 	//particleSystem->AddParticleGenerator(0.5f, { 0.0f, 10.0f, 25.0f }, { -0.5f, 1.0f, -0.5f }, 10.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 1.0f, 1.0f, 0.0f, 1.0f }, 1.0f);
 	//particleSystem->AddParticleGenerator(0.5f, { 12.0f, 10.0f, 12.0f }, { -0.5f, 1.0f, -0.5f }, 40.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0f);
 	//particleSystem->AddParticleGenerator(0.5f, { 25.0f, 10.0f, 0.0f }, { -0.5f, 1.0f, -0.5f }, 80.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 0.0f, 1.0f, 0.0f, 1.0f }, 3.0f);
@@ -102,15 +106,18 @@ void initPhysics(bool interactive)
 	particleSystem->AddAnchoredSpringParticle({ 0.0f, 10.0f, 25.0f }, Vector3D(), 10.0f, 0.98, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0, 0.0, 1000.0);
 	forceSystem->addAnchoredSpringForce(10.0, 30.0, { 0.0f, 30.0f, 25.0f });
 
-	Particle* springParticle = new Particle({ 15.0f, 40.0f, 0.0f }, Vector3D(), 40.0f, 0.98, 2.0, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.0, 1000.0);
-	Particle* springOther = new Particle({ 20.0f, 40.0f, 0.0f }, Vector3D(), 40.0f, 0.98, 2.0, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.0, 1000.0);
-	particleSystem->AddSpringParticles(springParticle, springOther);
-	forceSystem->addSpringForce(10.0, 30.0, springOther);
+	//Particle* springParticle = new Particle({ 15.0f, 40.0f, 0.0f }, Vector3D(), 40.0f, 0.98, 2.0, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.0, 1000.0);
+	//Particle* springOther = new Particle({ 20.0f, 40.0f, 0.0f }, Vector3D(), 40.0f, 0.98, 2.0, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.0, 1000.0);
+	//particleSystem->AddSpringParticles(springParticle, springOther);
+	//forceSystem->addSpringForce(10.0, 30.0, springOther);
 
-	Particle* box = new Particle(Vector3(-50, -50, -30), Vector3(0, 0, 0), 25.0f, 0.98f, Vector3(20.0f, 40.0f, 20.0f), Vector4(1.0f, 1.0f, 0.0f, 1.0f));
+	/*Particle* box = new Particle(Vector3(-50, -50, -30), Vector3(0, 0, 0), 25.0f, 0.98f, Vector3(20.0f, 40.0f, 20.0f), Vector4(1.0f, 1.0f, 0.0f, 1.0f));
 	particleSystem->AddParticle(box);
 
-	forceSystem->addBuoyancyForce(-50.0f, 0.08f, 1000.0f);
+	forceSystem->addBuoyancyForce(-50.0f, 0.08f, 1000.0f);*/
+
+	SolidBox* demoBox = new SolidBox(gPhysics, gScene, Vector3D(0.0f, 10.0f, 0.0f), Vector3D(2.0f, 2.0f, 2.0f), 25.0f, Vector4(0.2f, 0.2f, 0.2f, 1.0f));
+	solidSystem->AddBox(demoBox);
 
 	gPlayer = new PlayerManager(gPhysics, gScene, GetCamera(), Vector3D());
 	gravityGun = new GravityGun(GetCamera());
@@ -131,8 +138,9 @@ void stepPhysics(bool interactive, double t)
 	for (auto projectile : projectiles) {
 		projectile->integrate(t);
 	}
+	forceSystem->update(t);
 	particleSystem->update(t);
-
+	solidSystem->update(t);
 	gPlayer->update(t);
 	gravityGun->update(t);
 }
@@ -164,11 +172,12 @@ void handleMouse(int button, int state)
 {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		gravityGun->shootParticle();
+		gravityGun->shoot();
 	}
 
 	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
 	{
+		gravityGun->handleSolid(solidSystem->getAimedBox(GetCamera()->getEye(), GetCamera()->getDir()));
 		gravityGun->handleParticle(particleSystem->getAimedParticle(GetCamera()->getEye(), GetCamera()->getDir()));
 	}
 }

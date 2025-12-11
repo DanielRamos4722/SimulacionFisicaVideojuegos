@@ -6,6 +6,30 @@ BuoyancyForce::BuoyancyForce(float h, float V, float d) : height(h), volume(V), 
 }
 
 void
+BuoyancyForce::processForce(double t, SolidBox* box)
+{
+    PxRigidDynamic* rigid = box->getRigid();
+    float h = rigid->getGlobalPose().p.y;
+    float h0 = liquidParticle->getCurrentPos().getY();
+
+    Vector3 f(0, 0, 0);
+    float immersed = 0.0;
+    if (h - h0 > height * 0.5) {
+        immersed = 0.0;
+    }
+    else if (h0 - h > height * 0.5) {
+        immersed = 1.0;
+    }
+    else {
+        immersed = (h0 - h) / height + 0.5;
+    }
+
+    f.y = liquidDensity * volume * immersed * 9.8;
+
+    rigid->addForce(f);
+}
+
+void
 BuoyancyForce::processForce(double t, Particle* particle)
 {
     float h = particle->getCurrentPos().getY();

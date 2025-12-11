@@ -7,6 +7,7 @@ class GunForce : public ForceGenerator
 public:
     GunForce(PxTransform* playerT, float farForce, float nearStiff, float damping, float radius) : playerT(playerT), farForce(farForce), nearStiff(nearStiff), damping(damping), radius(radius) {};
     void update(double t) override {};
+    void processForce(double t, SolidBox* box) override;
     void processForce(double t, Particle* particle) override;
     inline float clamp(float x, float low, float high)
     {

@@ -8,12 +8,27 @@ ForceSystem::~ForceSystem()
 	}
 }
 
-void ForceSystem::update(double t, Particle* particle)
+void ForceSystem::update(double t)
 {
 	for (auto forceGenerator : forceGenerators)
 	{
 		forceGenerator->update(t);
+	}
+}
+
+void ForceSystem::updateParticle(double t, Particle* particle)
+{
+	for (auto forceGenerator : forceGenerators)
+	{
 		forceGenerator->processForce(t, particle);
+	}
+}
+
+void ForceSystem::updateSolid(double t, SolidBox* box)
+{
+	for (auto forceGenerator : forceGenerators)
+	{
+		forceGenerator->processForce(t, box);
 	}
 }
 

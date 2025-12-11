@@ -28,6 +28,8 @@
     <ClCompile Include="BuoyancyForce.cpp" />
     <ClCompile Include="PlayerManager.cpp" />
     <ClCompile Include="LevelManager.cpp" />
+    <ClCompile Include="SolidBox.cpp" />
+    <ClCompile Include="SolidSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -59,6 +61,8 @@
     <ClInclude Include="BuoyancyForce.h" />
     <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="LevelManager.h" />
+    <ClInclude Include="SolidBox.h" />
+    <ClInclude Include="SolidSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
