@@ -103,8 +103,8 @@ void initPhysics(bool interactive)
 	//particleSystem->AddParticleGenerator(0.5f, { 12.0f, 10.0f, 12.0f }, { -0.5f, 1.0f, -0.5f }, 40.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0f);
 	//particleSystem->AddParticleGenerator(0.5f, { 25.0f, 10.0f, 0.0f }, { -0.5f, 1.0f, -0.5f }, 80.0f, 30.0f, 5.0f, 0.98f, 2.0f, 100.0f, { 0.0f, 1.0f, 0.0f, 1.0f }, 3.0f);
 
-	particleSystem->AddAnchoredSpringParticle({ 0.0f, 10.0f, 25.0f }, Vector3D(), 10.0f, 0.98, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0, 0.0, 1000.0);
-	forceSystem->addAnchoredSpringForce(10.0, 30.0, { 0.0f, 30.0f, 25.0f });
+	//particleSystem->AddAnchoredSpringParticle({ 0.0f, 10.0f, 25.0f }, Vector3D(), 10.0f, 0.98, { 1.0f, 0.0f, 0.0f, 1.0f }, 2.0, 0.0, 1000.0);
+	//forceSystem->addAnchoredSpringForce(10.0, 30.0, { 0.0f, 30.0f, 25.0f });
 
 	//Particle* springParticle = new Particle({ 15.0f, 40.0f, 0.0f }, Vector3D(), 40.0f, 0.98, 2.0, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.0, 1000.0);
 	//Particle* springOther = new Particle({ 20.0f, 40.0f, 0.0f }, Vector3D(), 40.0f, 0.98, 2.0, { 0.0f, 1.0f, 0.0f, 1.0f }, 0.0, 1000.0);
@@ -116,13 +116,12 @@ void initPhysics(bool interactive)
 
 	forceSystem->addBuoyancyForce(-50.0f, 0.08f, 1000.0f);*/
 
-	SolidBox* demoBox = new SolidBox(gPhysics, gScene, Vector3D(0.0f, 10.0f, 0.0f), Vector3D(2.0f, 2.0f, 2.0f), 25.0f, Vector4(0.2f, 0.2f, 0.2f, 1.0f));
-	solidSystem->AddBox(demoBox);
-
-	gPlayer = new PlayerManager(gPhysics, gScene, GetCamera(), Vector3D());
+	gPlayer = new PlayerManager(gPhysics, gScene, GetCamera(), Vector3D(45.0f, -5.0f, 0.0f));
 	gravityGun = new GravityGun(GetCamera());
 
-	levelManager = new LevelManager(gPhysics, gScene);
+	levelManager = new LevelManager(gPhysics, gScene, solidSystem);
+
+	gScene->setGravity(Vector3D(0.0f, -20.81f, 0.0f));
 	}
 
 
@@ -153,7 +152,9 @@ void cleanupPhysics(bool interactive)
 	for (auto projectile : projectiles) {
 		delete projectile;
 	}
-
+	delete gPlayer;
+	delete levelManager;
+	delete solidSystem;
 	PX_UNUSED(interactive);
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++

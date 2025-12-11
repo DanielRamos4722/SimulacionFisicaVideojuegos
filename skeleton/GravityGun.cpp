@@ -12,7 +12,7 @@ GravityGun::GravityGun(const Camera* camera) : camera(camera), grabbing(false)
     setCrosshair();
     crosshair = new RenderItem(crosshairSphere, poseCrosshair, { 1.0f, 1.0f, 1.0f, 1.0f });
     radius = 400.0f;
-    shootForce = 300000.0f;
+    shootForce = 500000.0f;
     gunForce = new GunForce(pose, 10.0f, 20.0f, 9.0f, radius);
 }
 

@@ -31,5 +31,6 @@ private:
 	Camera* mCamera;
 
 	float speed;
+	float jumpForce;
 	unsigned char currentKey;
 };
