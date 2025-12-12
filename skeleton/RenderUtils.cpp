@@ -51,13 +51,22 @@ namespace
 {
 	Camera*	sCamera;
 
+bool firstMotion = true;
+
 void motionCallback(int x, int y)
 {
 	static int winWidth = glutGet(GLUT_WINDOW_WIDTH);
 	static int winHeight = glutGet(GLUT_WINDOW_HEIGHT);
 
-	int centerX = winWidth / 2;
-	int centerY = winHeight / 2;
+	int centerX = 960;
+	int centerY = 540;
+
+	if (firstMotion)
+	{
+		firstMotion = false;
+		glutWarpPointer(centerX, centerY);
+		return;
+	}
 
 	int dx = x - centerX;
 	int dy = y - centerY;
@@ -82,13 +91,22 @@ void keyboardUpCallback(unsigned char key, int x, int y)
 		gPlayer->onKeyUp(key);
 }
 
+bool firstMotionP = true;
+
 void passiveMotionCallback(int x, int y)
 {
 	static int winWidth = glutGet(GLUT_WINDOW_WIDTH);
 	static int winHeight = glutGet(GLUT_WINDOW_HEIGHT);
 
-	int centerX = winWidth / 2;
-	int centerY = winHeight / 2;
+	int centerX = 960;
+	int centerY = 540;
+
+	if (firstMotionP)
+	{
+		firstMotionP = false;
+		glutWarpPointer(centerX, centerY);
+		return;
+	}
 
 	int dx = x - centerX;
 	int dy = y - centerY;
@@ -174,7 +192,7 @@ void exitCallback(void)
 void renderLoop()
 {
 	StartCounter();
-	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f,-0.2f,-0.7f));
+	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f, -0.2f, -0.7f));
 
 	setupDefaultWindow("Simulacion Fisica Videojuegos");
 	setupDefaultRenderState();
@@ -188,6 +206,7 @@ void renderLoop()
 	glutMotionFunc(motionCallback);
 	glutPassiveMotionFunc(passiveMotionCallback);
 	motionCallback(0,0);
+	glutWarpPointer(960, 540);
 	glutSetCursor(GLUT_CURSOR_NONE);
 
 	atexit(exitCallback);

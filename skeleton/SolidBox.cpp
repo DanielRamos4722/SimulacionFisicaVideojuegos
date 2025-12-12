@@ -4,8 +4,10 @@ SolidBox::SolidBox(PxPhysics* physics, PxScene* scene, const PxVec3& position, c
 {
     PxTransform transform(position);
     actor = physics->createRigidDynamic(transform);
+    actor->setLinearDamping(0.0f);
+    actor->setAngularDamping(0.0f);
     PxBoxGeometry boxGeom(dimensions);
-    PxMaterial* material = physics->createMaterial(0.5f, 0.4f, 0.0f);
+    PxMaterial* material = physics->createMaterial(0.5f, 0.6f, 0.0f);
 
     PxShape* shape = actor->createShape(boxGeom, *material);
     PxRigidBodyExt::updateMassAndInertia(*actor, mass);

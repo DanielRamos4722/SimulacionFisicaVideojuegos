@@ -55,9 +55,9 @@ void ForceSystem::addGravityForceGenerator(Vector3D gravityForce)
 	forceGenerators.emplace_back(new GravityForce(gravityForce));
 }
 
-void ForceSystem::addWindForceGenerator(Vector3D windVel, float linearDragCoeff, float quadraticDragCoeff)
+void ForceSystem::addWindForceGenerator(Vector3D windVel, Vector3D origin, float range, float linearDragCoeff, float quadraticDragCoeff)
 {
-	forceGenerators.emplace_back(new WindForce(windVel, linearDragCoeff, quadraticDragCoeff));
+	forceGenerators.emplace_back(new WindForce(windVel, origin, range, linearDragCoeff, quadraticDragCoeff));
 }
 
 void ForceSystem::addWhirlwindForceGenerator(float linearDragCoeff, float quadraticDragCoeff, Vector3D center, float strength, float radius)
@@ -80,9 +80,9 @@ void ForceSystem::addAnchoredSpringForce(double k, double resting, const Vector3
 	anchoredSpringGenerators.emplace_back(new AnchoredSpringForce(k, resting, anchorPos));
 }
 
-void ForceSystem::addBuoyancyForce(float h, float V, float d)
+void ForceSystem::addBuoyancyForce(float h, float V, float d, float yPos)
 {
-	forceGenerators.emplace_back(new BuoyancyForce(h, V, d));
+	forceGenerators.emplace_back(new BuoyancyForce(h, V, d, yPos));
 }
 
 void ForceSystem::increaseKfirstAnchoredSpring()

@@ -24,6 +24,7 @@ public:
 private:
 	void move();
 	void updateCamera();
+	bool grounded();
 
 	physx::PxPhysics* gPhysics;
 	physx::PxScene* gScene;

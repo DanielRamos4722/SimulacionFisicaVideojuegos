@@ -25,13 +25,13 @@ public:
 	void updateSprings(double t, std::vector<std::pair<Particle*, Particle*>> springParticles);
 
 	void addGravityForceGenerator(Vector3D gravityForce);
-	void addWindForceGenerator(Vector3D windVel, float linearDragCoeff, float quadraticDragCoeff = 0.0f);
+	void addWindForceGenerator(Vector3D windVel, Vector3D origin, float range, float linearDragCoeff, float quadraticDragCoeff = 0.0f);
 	void addWhirlwindForceGenerator(float linearDragCoeff, float quadraticDragCoeff, Vector3D center, float strength, float radius);
 	void addExplosionForceGenerator(Vector3D center, float strength, float radius, float decayTime);
 
 	void addSpringForce(double k, double restingLength, Particle* other);
 	void addAnchoredSpringForce(double k, double resting, const Vector3D& anchorPos);
-	void addBuoyancyForce(float h, float V, float d);
+	void addBuoyancyForce(float h, float V, float d, float yPos);
 
 	void increaseKfirstAnchoredSpring();
 

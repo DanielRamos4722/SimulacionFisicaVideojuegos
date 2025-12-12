@@ -99,7 +99,6 @@ void GravityGun::handleParticle(Particle* particle)
             grabbing = true;
             activeParticle = particle;
             activeParticle->setGrabbed();
-            std::cout << particle->getCurrentPos().getX() << " " << particle->getCurrentPos().getY() << " " << particle->getCurrentPos().getZ() << "\n";
         }
     }
     else

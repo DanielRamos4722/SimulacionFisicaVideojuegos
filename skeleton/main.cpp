@@ -119,7 +119,7 @@ void initPhysics(bool interactive)
 	gPlayer = new PlayerManager(gPhysics, gScene, GetCamera(), Vector3D(45.0f, -5.0f, 0.0f));
 	gravityGun = new GravityGun(GetCamera());
 
-	levelManager = new LevelManager(gPhysics, gScene, solidSystem);
+	levelManager = new LevelManager(gPhysics, gScene, solidSystem, forceSystem, particleSystem);
 
 	gScene->setGravity(Vector3D(0.0f, -20.81f, 0.0f));
 	}
