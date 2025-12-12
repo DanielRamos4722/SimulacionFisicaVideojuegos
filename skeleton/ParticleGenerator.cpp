@@ -20,15 +20,13 @@ void ParticleGenerator::update(double t)
 void ParticleGenerator::AddParticle()
 {
     float newRandom = Random::Uniform(0.0, randomRange);
-    Vector3D realPos = pos + Vector3D(Random::Uniform(-1.0f, 1.0f), Random::Uniform(-1.0f, 1.0f), Random::Uniform(-1.0f, 1.0f)).normalized() * newRandom;
+	float z = Random::Uniform(-1.0f, 1.0f);
+	float a = Random::Uniform(0.0f, 2.0f * 3.1416f);
+	float r = sqrt(1.0f - z * z);
+	Vector3D randomDir = Vector3D(r * cos(a), r * sin(a), z);
+    Vector3D realPos = pos + randomDir * newRandom;
 
     float randomVel = Random::Normal(avgVel, velVariance);
 
-    float z = Random::Uniform(cos(angle * 3.1416f / 180.0f), 1.0f);
-    float r = sqrt(1.0f - z * z);
-    float phi = Random::Uniform(0.0f, 2.0f * 3.14159265f);
-    Vector3D localDir(r * cos(phi), r * sin(phi), z);
-    Vector3D finalDir = (dir + localDir).normalized();
-
-    pS->AddParticle(realPos, finalDir * randomVel, mass, damp, color, size, lifeSpan, maxDistance);
+    pS->AddParticle(realPos, dir * randomVel, mass, damp, color, size, lifeSpan, maxDistance);
 }

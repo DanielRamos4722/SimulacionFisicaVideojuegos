@@ -2,7 +2,7 @@
 
 using namespace physx;
 
-PlayerManager::PlayerManager(PxPhysics* gPhysics, PxScene* gScene, Camera* camera, Vector3D initPos) : gPhysics(gPhysics), gScene(gScene), mCamera(camera), speed(25.0f), jumpForce(3.5f) //1.3
+PlayerManager::PlayerManager(PxPhysics* gPhysics, PxScene* gScene, Camera* camera, Vector3D initPos) : gPhysics(gPhysics), gScene(gScene), mCamera(camera), speed(25.0f), jumpForce(1.5f) //1.5
 {
     PxVec3 halfExtents(0.4f, 4.0f, 0.4f);
     PxBoxGeometry geometry(halfExtents);
