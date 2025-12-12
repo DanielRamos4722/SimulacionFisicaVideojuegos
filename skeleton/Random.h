@@ -15,7 +15,7 @@ namespace Random {
     }
 
     inline float Uniform(float min, float max) {
-        std::uniform_real_distribution<float> dist(min, max);
+        std::uniform_real_distribution<float> dist(0.0f, 1.0f);
         return dist(Generator());
     }
 

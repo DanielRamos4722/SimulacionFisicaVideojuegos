@@ -108,5 +108,5 @@ void LevelManager::createForces()
 
 void LevelManager::createParticles()
 {
-    //particleSystem->AddParticleGenerator(0.2f, { 0.0f, 0.0f, 0.0f }, {0.0f, 1.0f, 0.0f}, 90.0f, 3.0f, 10.0f, 4.0f, 0.98f, 0.5f, 100.0f);
+    particleSystem->AddParticleGenerator(0.2f, { -60.0f, -4.0f, 15.0f }, 0.0f, { 0.0f, 1.0f, 0.0f }, 360.0f, 10.0f, 10.0f, 4.0f, 0.98f, 1.5f, 100.0f, Vector4(0.0f, 1.0f, 0.0f, 1.0f), 0.3f);
 }

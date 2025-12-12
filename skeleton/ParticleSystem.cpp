@@ -43,9 +43,9 @@ void ParticleSystem::update(double t)
 	}
 }
 
-void ParticleSystem::AddParticleGenerator(float frequency, Vector3D pos, Vector3D dir, float angle, float mass, float avgVel, float velVariance, float damp, double lifeSpan, float maxDistance, Vector4 color, PxReal size)
+void ParticleSystem::AddParticleGenerator(float frequency, Vector3D pos, float randomRange, Vector3D dir, float angle, float mass, float avgVel, float velVariance, float damp, double lifeSpan, float maxDistance, Vector4 color, PxReal size)
 {
-	particleGenerators.emplace_back(new ParticleGenerator(this, frequency, pos, dir, angle, mass, avgVel, velVariance, damp, lifeSpan, maxDistance, color, size));
+	particleGenerators.emplace_back(new ParticleGenerator(this, frequency, pos, randomRange, dir, angle, mass, avgVel, velVariance, damp, lifeSpan, maxDistance, color, size));
 }
 
 void ParticleSystem::AddParticle(Vector3D pos, Vector3D vel, float mass, float damp, Vector4 color, PxReal size, double lifeSpan, float maxDistance)

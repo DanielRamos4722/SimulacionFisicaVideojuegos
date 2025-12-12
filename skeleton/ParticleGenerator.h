@@ -9,7 +9,7 @@ class ParticleSystem;
 class ParticleGenerator
 {
 public:
-	ParticleGenerator(ParticleSystem* pS, float frequency, Vector3D pos, Vector3D dir, float angle, float mass, float avgVel, float velVariance, float damp, double lifeSpan, float maxDistance, Vector4 color = { 1.0f, 0.0f, 0.0f, 1.0f }, PxReal size = 2.0f);
+	ParticleGenerator(ParticleSystem* pS, float frequency, Vector3D pos, float randomRange, Vector3D dir, float angle, float mass, float avgVel, float velVariance, float damp, double lifeSpan, float maxDistance, Vector4 color = { 1.0f, 0.0f, 0.0f, 1.0f }, PxReal size = 2.0f);
 	~ParticleGenerator() { pS = nullptr; }
 	void update(double t);
 	void AddParticle();
@@ -24,6 +24,7 @@ protected:
 	float avgVel;
 	float velVariance;
 	float angle;
+	float randomRange;
 
 	Vector3D gravity;
 
