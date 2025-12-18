@@ -2,6 +2,7 @@
 
 - Moverse: WASD
 - Mover camara: Movimiento raton
+- Espacio: Saltar
 - Agarrar/Soltar objeto: Click derecho
 - Disparar objeto agarrado: Click izquierdo
 
