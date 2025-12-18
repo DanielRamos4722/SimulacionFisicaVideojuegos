@@ -1,8 +1,10 @@
 # SimulacionFisicaVideojuegos
-Repositorio de las prácticas de la asignatura de Simulación Física de Videojuegos
 
-En la carpeta skeleton estará vuestro código fuente
+- Moverse: WASD
+- Mover camara: Movimiento raton
+- Agarrar/Soltar objeto: Click derecho
+- Disparar objeto agarrado: Click izquierdo
 
-Necesitaréis además descomprimir el archivo que se indica a continuación en la raíz del repositorio:
+- Objetivo: Utilizar las cajas a favor para atravesar el pasillo
 
 Carpetas bin y common https://ucomplutense-my.sharepoint.com/:f:/g/personal/liagar05_ucm_es/ElNxHPmZVj9Ni9-8FKTKp7cBJHAarnL3vvEvG50z0QMrzg
